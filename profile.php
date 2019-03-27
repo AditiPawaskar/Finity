@@ -16,15 +16,28 @@ $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     // output data of each row
+
+    $row = mysqli_fetch_assoc($result);
+    $full_name = $row["full_name"];
+    $password = $row["password"];
+    $email = $row["email"];
+    $mob_number = $row["mob_number"];
+
+    // echo $full_name;
+
+    /*
     while($row = mysqli_fetch_assoc($result)) {
         echo "full_name: " . $row["full_name"]. " Password" . $row["password"]. "email: " . $row["full_name"]. "mobile number:" . $row["mob_number"]."<br>";
     }
+    */
 } else {
     echo "0 results";
 }
 
 mysqli_close($conn);
 ?>
+
+
 <!doctype html>
 <html lang="en">
 
@@ -143,7 +156,7 @@ mysqli_close($conn);
                         <img src="img/user-img.jpg" alt="" class="img-thumbnail">
                     </div>
                     <div>
-                        <h5 class="font-weight-normal">Josephin Villa</h5>
+                        <h5 class="font-weight-normal"><?php echo $full_name; ?></h5>
                         <h6 class="font-weight-normal">Web Designer</h6>
                     </div>
                 </div>
@@ -155,7 +168,7 @@ mysqli_close($conn);
                     <div class="d-flex flex-rows align-self-start">
                         <img src="img/user-img.jpg" alt="" class="mt-xl-4 mt-lg-0 mb-lg-5 ml-3 img-thumbnail">
                         <div>
-                            <h5 class="mt-xl-4 mt-lg-0 ml-4 font-weight-normal">Josephin Villa</h5>
+                            <h5 class="mt-xl-4 mt-lg-0 ml-4 font-weight-normal"><?php echo $full_name; ?></h5>
                             <h6 class="font-weight-normal ml-4 mb-lg-5">Web Designer</h6>
                         </div>
                     </div>
@@ -173,19 +186,19 @@ mysqli_close($conn);
                             <tbody>
                                 <tr>
                                     <th scope="row">Full Name</th>
-                                    <td>Josephine Villa</td>
+                                    <td><?php echo $full_name; ?></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Password</th>
-                                    <td>123456</td>
+                                    <td><?php echo $password; ?></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Email</th>
-                                    <td>xyz@gmail.com</td>
+                                    <td><?php echo $email; ?></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Mobile Number</th>
-                                    <td>8974563214</td>
+                                    <td><?php echo $mob_number; ?></td>
                                 </tr>
                             </tbody>
                         </table>
