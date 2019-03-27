@@ -1,5 +1,15 @@
 <?php
 $message="";
+  
+$conn = mysqli_connect("localhost","root","","truck");
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
+  echo "Connected successfully";
+
+
+
+
 if(count($_POST)>0) {
   $conn = mysqli_connect("localhost","root","","truck");
   $result = mysqli_query($conn,"SELECT * FROM user WHERE user_name='" . $_POST["username"] . "' and password = '". $_POST["password"]."'");
@@ -34,6 +44,7 @@ if(count($_POST)>0) {
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <body style="background-image: url('img/bus.jpg');">
+  <div class="message"><?php { echo $message3; } ?></div>
   <div class="container h-100">
     <div class="d-flex h-100 justify-content-center align-items-center">
       <div class="card">
@@ -41,7 +52,7 @@ if(count($_POST)>0) {
           <h3>Login</h3>
         </div>
         <div class="card-body">
-          <form>
+          <form name="frmUser" method="post" action="">
             <div class="input-group form-group">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
