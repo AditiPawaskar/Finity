@@ -23,13 +23,6 @@ if (mysqli_num_rows($result) > 0) {
     $email = $row["email"];
     $mob_number = $row["mob_number"];
 
-    // echo $full_name;
-
-    /*
-    while($row = mysqli_fetch_assoc($result)) {
-        echo "full_name: " . $row["full_name"]. " Password" . $row["password"]. "email: " . $row["full_name"]. "mobile number:" . $row["mob_number"]."<br>";
-    }
-    */
 } else {
     echo "0 results";
 }

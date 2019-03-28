@@ -1,29 +1,45 @@
-<?php
-$message="";
-  
-$conn = mysqli_connect("localhost","root","","truck");
-if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
-}
-  echo "Connected successfully";
+<?php  
+    if(isset($_POST["submit"])){  
+      
+    if(!empty($_POST['user']) && !empty($_POST['pass'])) {  
+        $user=$_POST['user'];  
+        $pass=$_POST['pass'];   
+      
+      
+        $con=mysqli_connect('localhost','root','') or die(mysqli_error());  
+        mysqli_select_db($con, 'truck') or die("cannot select DB");  
+      
+        $query=mysqli_query($con ,"SELECT * FROM user WHERE username='".$user."' AND password='".$pass."'"); 
 
+        $numrows=mysqli_num_rows($query);  
+        if($numrows!=0)  
+        {  
+        while($row=mysqli_fetch_assoc($query))  
+        {  
+        $dbusername=$row['username'];  
+        $dbpassword=$row['password'];
+        $dbuserid=$row['pid'];
+        }  
+      
+        if($user == $dbusername && $pass == $dbpassword)  
+        {  
+        session_start();  
+        $_SESSION['lllog'] = true;
+        $_SESSION['user_id']= $user;
+        echo $_SESSION['user_id'];
 
-
-
-if(count($_POST)>0) {
-  $conn = mysqli_connect("localhost","root","","truck");
-  $result = mysqli_query($conn,"SELECT * FROM user WHERE user_name='" . $_POST["username"] . "' and password = '". $_POST["password"]."'");
-  $count  = mysqli_num_rows($result);
-  if($count==0) {
-    $message = "Invalid Username or Password!";
-  } else {
-    $message = "You are successfully authenticated!";
-  }
-}
+        /* Redirect browser */  
+        header("Location: ../form.php");  
+        }  
+        } else {  
+        echo "Invalid username or password!";  
+        }  
+      
+    } else {  
+        echo "All fields are required!";  
+    }  
+  }  
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -57,7 +73,7 @@ if(count($_POST)>0) {
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" placeholder="username">
+              <input name="username" type="text" class="form-control" placeholder="username">
 
             </div>
             <div class="input-group form-group">
@@ -70,7 +86,7 @@ if(count($_POST)>0) {
               <input type="checkbox">Remember Me
             </div>
             <div class="form-group">
-              <input type="submit" value="Login" class="btn float-right login_btn">
+              <input name="password" name="submit" type="submit" value="Login" class="btn float-right login_btn">
             </div>
           </form>
         </div>
