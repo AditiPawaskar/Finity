@@ -13,15 +13,41 @@ $sql = "INSERT INTO lead_table(emp_name, company_name, email, mobile, start_time
 VALUES ('".$_POST["emp_name"]."','".$_POST["company_name"]."','".$_POST["email"]."','".$_POST["mob_number"]."','".$_POST["start_time"]."','".$_POST["end_time"]."','".$_POST["flex_time"]."','".$_POST["pickup_loc"]."','".$_POST["pickup_landmark"]."','".$_POST["drop_loc"]."','".$_POST["drop_stop"]."','".$_POST["note"]."',1)";
 */
 
-$sql = "INSERT INTO lead_table(emp_name, company_name, email, mobile, start_time, end_time, flexible_time, pickup_loc, pickup_landmark, drop_loc, drop_stop, note,user_id)
-VALUES ('".$_POST["emp_name"]."','".$_POST["company_name"]."','".$_POST["email"]."','".$_POST["mob_number"]."','".$_POST["start_time"]."','".$_POST["end_time"]."','".$_POST["flex_time"]."','".$_POST["pickup_loc"]."','".$_POST["pickup_landmark"]."','".$_POST["drop_loc"]."','".$_POST["drop_stop"]."','".$_POST["note"]."',1)";
+// $full_name = $_POST['username'];
+$pickup_location = $_POST['pickup_loc'];
+$drop_location = $_POST['drop_loc'];
+$location = $pickup_location . ' ' ."to". ' '. $drop_location;
 
+$sql = "INSERT INTO lead_table(emp_name, company_name, email, mobile, start_time, end_time, flexible_time, pickup_loc, pickup_landmark, drop_loc, drop_stop, note,action,user_id)
+VALUES ('".$_POST["emp_name"]."','".$_POST["company_name"]."','".$_POST["email"]."','".$_POST["mob_number"]."','".$_POST["start_time"]."','".$_POST["end_time"]."','".$_POST["flex_time"]."','".$_POST["pickup_loc"]."','".$_POST["pickup_landmark"]."','".$_POST["drop_loc"]."','".$_POST["drop_stop"]."','".$_POST["note"]."',"In process",1)";
 
 if (mysqli_query($conn, $sql)) {
     echo "record added successfully";
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
+
+$sql3 = "";
+$sql2 = "SELECT * FROM lead_stat WHERE route='$location'";
+    if(mysqli_num_rows($sql2) == 0){
+        $sql3 = "INSERT INTO lead_stat(route, converted, interested, uncontacted, inprocess) VALUES($location,0,0,0,1)";   
+    }   
+else{
+         ';'oi;ou
+    }
+
+if (mysqli_query($conn, $sql2)) {
+    echo "search in lead table done";
+} else {
+    echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+}
+if (mysqli_query($conn, $sql3)) {
+    echo "record added successfully in lead_stat table";
+} else {
+    echo "Error: " . $sql3 . "<br>" . mysqli_error($conn);
+}
+
+
 
 mysqli_close($conn);
 ?>

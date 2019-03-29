@@ -29,7 +29,9 @@
         echo $_SESSION['user_id'];
 
         /* Redirect browser */  
-        header("Location: ../form.php");  
+        //header("Location: ../form.php");  
+        echo "You have successfully logged in!";  
+        
         }  
         } else {  
         echo "Invalid username or password!";  
@@ -60,7 +62,6 @@
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <body style="background-image: url('img/bus.jpg');">
-  <div class="message"><?php { echo $message3; } ?></div>
   <div class="container h-100">
     <div class="d-flex h-100 justify-content-center align-items-center">
       <div class="card">

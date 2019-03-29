@@ -1,5 +1,30 @@
 <?php
-echo "php working";
+// echo "php working";
+
+$conn = mysqli_connect("localhost","root","","truck");
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
+  echo "Connected successfully";
+
+$sql2 = " ";
+$sql3 = " ";
+
+if (isset($_POST['Result'])){
+  $radioVal = $_POST["exampleRadios"];
+
+  if($radioVal == "converted"){
+    $sql2 = "UPDATE lead_table SET inprocess = inprocess + 1 WHERE route=$location";
+    $sql3 = "UPDATE lead_stat SET inprocess = inprocess + 1 WHERE route=$location";
+  }
+  else if ($radioVal == "interested"){
+  
+  }
+  else if ($radioVal == "uncontacted"){
+  
+  }
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -206,27 +231,29 @@ echo "php working";
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div class="modal-body">
+              <form method = "post" action = "<?php $_PHP_SELF ?>">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="converted">
                 <label class="form-check-label" for="exampleRadios1">
                   Converted
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="interested">
                 <label class="form-check-label" for="exampleRadios2">
                   Interested
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option3" checked>
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="inprocess" checked>
                 <label class="form-check-label" for="exampleRadios1">
                   In Process
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option4">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="uncontacted">
                 <label class="form-check-label" for="exampleRadios2">
                   Uncontacted
                 </label>
@@ -234,8 +261,9 @@ echo "php working";
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="submit" value="Result" class="btn btn-primary">Save changes</button>
             </div>
+          </form>
           </div>
         </div>
       </div>
