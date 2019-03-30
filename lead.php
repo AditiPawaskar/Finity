@@ -1,5 +1,8 @@
 <?php
 // echo "php working";
+$status = ' ';
+$pid = ' ';
+
 
 $conn = mysqli_connect("localhost","root","","truck");
 if ($conn->connect_error) {
@@ -10,18 +13,20 @@ if ($conn->connect_error) {
 $sql2 = " ";
 $sql3 = " ";
 
-if (isset($_POST['Result'])){
+if (isset($_POST['save_changes'])){
   $radioVal = $_POST["exampleRadios"];
 
   if($radioVal == "converted"){
-    $sql2 = "UPDATE lead_table SET inprocess = inprocess + 1 WHERE route=$location";
-    $sql3 = "UPDATE lead_stat SET inprocess = inprocess + 1 WHERE route=$location";
+    $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
+    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND converted = converted + 1 WHERE route=$location";
   }
   else if ($radioVal == "interested"){
-  
+    $sql2 = "UPDATE lead_table SET action='interested' WHERE detail_id=$pid";
+    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND (interested = interested + 1) WHERE route=$location"; 
   }
   else if ($radioVal == "uncontacted"){
-  
+    $sql2 = "UPDATE lead_table SET action='uncontacted' WHERE detail_id=$pid";
+    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND uncontacted = uncontacted + 1 WHERE route=$location";
   }
 }
 
@@ -38,7 +43,7 @@ if (isset($_POST['Result'])){
     href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/af-2.3.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.css" />
   <script type="text/javascript"
     src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/af-2.3.2/cr-1.5.0/fc-3.2.5/fh-3.1.4/kt-2.5.0/r-2.2.2/rg-1.1.0/rr-1.2.4/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
-
+  
   <!-- Datatable end -->
   <!-- Css File Link -->
   <link rel="stylesheet" href="css/index.css">
@@ -152,6 +157,7 @@ if (isset($_POST['Result'])){
             <th>Drop Location</th>
             <th>Drop Stop</th>
             <th>Note</th>
+            <th>Action status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -172,7 +178,7 @@ if (isset($_POST['Result'])){
     
   
 
-          $sql = "SELECT emp_name,company_name,email,mobile,start_time,end_time,flexible_time,pickup_loc,pickup_landmark,drop_loc,drop_stop,note FROM lead_table";
+          $sql = "SELECT emp_name,detail_id,company_name,email,mobile,start_time,end_time,flexible_time,pickup_loc,pickup_landmark,drop_loc,drop_stop,note,action FROM lead_table";
           $result = mysqli_query($conn, $sql);
 
           if (mysqli_num_rows($result) > 0) {
@@ -181,8 +187,12 @@ if (isset($_POST['Result'])){
           $row = mysqli_fetch_assoc($result);
 
           while($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . $row["emp_name"]. "</td><td>" . $row["company_name"] . "</td><td>" . $row["email"]. "</td><td>" . $row["mobile"]."</td><td>" . $row["start_time"]."</td><td>" . $row["end_time"]."</td><td>" . $row["flexible_time"]."</td><td>" . $row["pickup_loc"]. "</td><td>" . $row["pickup_landmark"]."</td><td>" . $row["drop_loc"]."</td><td>" . $row["drop_stop"]."</td><td>" . $row["note"]."</td>";
-                     echo '<td class="dropdown">
+            $pid = $row["detail_id"];
+            $status = $row["action"];
+
+            echo "<tr><td>" . $row["emp_name"]. "</td><td>" . $row["company_name"] . "</td><td>" . $row["email"]. "</td><td>" . $row["mobile"]."</td><td>" . $row["start_time"]."</td><td>" . $row["end_time"]."</td><td>" . $row["flexible_time"]."</td><td>" . $row["pickup_loc"]. "</td><td>" . $row["pickup_landmark"]."</td><td>" . $row["drop_loc"]."</td><td>" . $row["drop_stop"]."</td><td>" . $row["note"]."</td><td>". $row["action"]."</td>";
+           // echo "<td> $status </td>";
+                     echo '<td class="dropdown id="$pid" name="$pid">
               <button type="button" class="btn dropdown-color" data-toggle="modal" data-target="#leadModal"><i class="fa fa-cog mr-2" aria-hidden="true"></i><i data-feather="chevron-down"></i>
               </button>
             </td>
@@ -235,25 +245,25 @@ if (isset($_POST['Result'])){
             <div class="modal-body">
               <form method = "post" action = "<?php $_PHP_SELF ?>">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="converted">
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios1" value="converted" >
                 <label class="form-check-label" for="exampleRadios1">
                   Converted
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="interested">
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios2" value="interested" checked>
                 <label class="form-check-label" for="exampleRadios2">
                   Interested
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="inprocess" checked>
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios1" value="inprocess">
                 <label class="form-check-label" for="exampleRadios1">
                   In Process
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="uncontacted">
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios2" value="uncontacted">
                 <label class="form-check-label" for="exampleRadios2">
                   Uncontacted
                 </label>
@@ -261,7 +271,7 @@ if (isset($_POST['Result'])){
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" value="Result" class="btn btn-primary">Save changes</button>
+              <button type="submit" name="save_changes" value="Result" class="btn btn-primary">Save changes</button>
             </div>
           </form>
           </div>
@@ -292,6 +302,7 @@ if (isset($_POST['Result'])){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script src="js/script.js"></script>
 <script>
   $(document).ready(function () {
@@ -309,7 +320,17 @@ if (isset($_POST['Result'])){
     });
   });
 </script>
+  <script>
+    $(document).ready(function(){
+      if(localStorage.selected) {
+        $('#' + localStorage.selected ).attr('checked', true);
+      }
+      $('.inputabs').click(function(){
+        localStorage.setItem("selected", this.id);
+      });
+    });
 
+</script>
 <!-- end datatable -->
 
 

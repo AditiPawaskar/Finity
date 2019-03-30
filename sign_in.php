@@ -1,9 +1,9 @@
 <?php  
     if(isset($_POST["submit"])){  
       
-    if(!empty($_POST['user']) && !empty($_POST['pass'])) {  
-        $user=$_POST['user'];  
-        $pass=$_POST['pass'];   
+    if(!empty($_POST['username']) && !empty($_POST['password'])) {  
+        $user=$_POST['username'];  
+        $pass=$_POST['password'];   
       
       
         $con=mysqli_connect('localhost','root','') or die(mysqli_error());  
@@ -16,13 +16,13 @@
         {  
         while($row=mysqli_fetch_assoc($query))  
         {  
-        $dbusername=$row['username'];  
+        $dbusername=$row['user_name'];  
         $dbpassword=$row['password'];
-        $dbuserid=$row['pid'];
+        $dbuserid=$row['user_id'];
         }  
       
         if($user == $dbusername && $pass == $dbpassword)  
-        {  
+        {  echo "You have logged in successfully!";
         session_start();  
         $_SESSION['lllog'] = true;
         $_SESSION['user_id']= $user;
