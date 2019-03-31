@@ -1,36 +1,4 @@
-<?php
-// echo "php working";
-$status = ' ';
-$pid = ' ';
 
-
-$conn = mysqli_connect("localhost","root","","truck");
-if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
-}
-  echo "Connected successfully";
-
-$sql2 = " ";
-$sql3 = " ";
-
-if (isset($_POST['save_changes'])){
-  $radioVal = $_POST["exampleRadios"];
-
-  if($radioVal == "converted"){
-    $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
-    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND converted = converted + 1 WHERE route=$location";
-  }
-  else if ($radioVal == "interested"){
-    $sql2 = "UPDATE lead_table SET action='interested' WHERE detail_id=$pid";
-    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND (interested = interested + 1) WHERE route=$location"; 
-  }
-  else if ($radioVal == "uncontacted"){
-    $sql2 = "UPDATE lead_table SET action='uncontacted' WHERE detail_id=$pid";
-    $sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND uncontacted = uncontacted + 1 WHERE route=$location";
-  }
-}
-
-?>
 <!doctype html>
 <html lang="en">
 
@@ -190,7 +158,7 @@ if (isset($_POST['save_changes'])){
             $pid = $row["detail_id"];
             $status = $row["action"];
 
-            echo "<tr><td>" . $row["emp_name"]. "</td><td>" . $row["company_name"] . "</td><td>" . $row["email"]. "</td><td>" . $row["mobile"]."</td><td>" . $row["start_time"]."</td><td>" . $row["end_time"]."</td><td>" . $row["flexible_time"]."</td><td>" . $row["pickup_loc"]. "</td><td>" . $row["pickup_landmark"]."</td><td>" . $row["drop_loc"]."</td><td>" . $row["drop_stop"]."</td><td>" . $row["note"]."</td><td>". $row["action"]."</td>";
+            echo "<tr><td>" . $row["emp_name"]. "</td><td>" . $row["company_name"] . "</td><td>" . $row["email"]. "</td><td>" . $row["mobile"]."</td><td>" . $row["start_time"]."</td><td>" . $row["end_time"]."</td><td>" . $row["flexible_time"]."</td><td>" . $row["pickup_loc"]. "</td><td>" . $row["pickup_landmark"]."</td><td>" . $row["drop_loc"]."</td><td>" . $row["drop_stop"]."</td><td>" . $row["note"]."</td><td>". $status."</td>";
            // echo "<td> $status </td>";
                      echo '<td class="dropdown id="$pid" name="$pid">
               <button type="button" class="btn dropdown-color" data-toggle="modal" data-target="#leadModal"><i class="fa fa-cog mr-2" aria-hidden="true"></i><i data-feather="chevron-down"></i>
@@ -257,14 +225,14 @@ if (isset($_POST['save_changes'])){
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios1" value="inprocess">
-                <label class="form-check-label" for="exampleRadios1">
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios3" value="inprocess">
+                <label class="form-check-label" for="exampleRadios3">
                   In Process
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios2" value="uncontacted">
-                <label class="form-check-label" for="exampleRadios2">
+                <input class="form-check-input inputabs" type="radio" name="exampleRadios" id="exampleRadios4" value="uncontacted">
+                <label class="form-check-label" for="exampleRadios4">
                   Uncontacted
                 </label>
               </div>
@@ -320,18 +288,23 @@ if (isset($_POST['save_changes'])){
     });
   });
 </script>
-  <script>
+<!--   <script>
     $(document).ready(function(){
       if(localStorage.selected) {
         $('#' + localStorage.selected ).attr('checked', true);
       }
       $('.inputabs').click(function(){
         localStorage.setItem("selected", this.id);
+        store = localStorage.getItem("selected");
+        // <?php  
+        // $msg = "<script>var n=document.getElementById('Result').val; document.write(n);</script>";
+        // ?> 
+
       });
     });
 
 </script>
-<!-- end datatable -->
+ --><!-- end datatable -->
 
 
 
@@ -341,3 +314,50 @@ if (isset($_POST['save_changes'])){
 </body>
 
 </html>
+
+<?php
+// echo "php working";
+$status = ' ';
+$pid = ' ';
+
+
+$conn = mysqli_connect("localhost","root","","truck");
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
+  echo "Connected successfully";
+
+$sql2 = " ";
+//$sql3 = " ";
+
+if (isset($_POST['save_changes'])){
+  $radioVal = $_POST["exampleRadios"];
+
+  if($radioVal == "converted"){
+    $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
+    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND converted = converted + 1 WHERE route=$location";
+  }
+  else if ($radioVal == "interested"){
+    $sql2 = "UPDATE lead_table SET action='interested' WHERE detail_id=$pid";
+    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND (interested = interested + 1) WHERE route=$location"; 
+  }
+  else if ($radioVal == "uncontacted"){
+    $sql2 = "UPDATE lead_table SET action='uncontacted' WHERE detail_id=$pid";
+    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND uncontacted = uncontacted + 1 WHERE route=$location";
+  }
+}
+
+if (mysqli_query($conn, $sql2)) {
+    echo "search in lead table done";
+} else {
+    echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
+}
+
+// if (mysqli_query($conn, $sql3)) {
+//     echo "record added successfully in lead_stat table";
+// } else {
+//     echo "Error: " . $sql3 . "<br>" . mysqli_error($conn);
+// }
+
+
+?>
