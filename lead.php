@@ -318,8 +318,6 @@
 <?php
 // echo "php working";
 $status = ' ';
-$pid = ' ';
-
 
 $conn = mysqli_connect("localhost","root","","truck");
 if ($conn->connect_error) {
@@ -331,24 +329,39 @@ $sql2 = " ";
 //$sql3 = " ";
 
 if (isset($_POST['save_changes'])){
+
+  $id = ((int)$_POST["id"]);
+
+  // $pid = 5;
+  // $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
+
+  //$sql2 = "UPDATE lead_table SET action='$pid' WHERE detail_id=3";
+
   $radioVal = $_POST["exampleRadios"];
 
-  if($radioVal == "converted"){
-    $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
-    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND converted = converted + 1 WHERE route=$location";
-  }
-  else if ($radioVal == "interested"){
-    $sql2 = "UPDATE lead_table SET action='interested' WHERE detail_id=$pid";
-    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND (interested = interested + 1) WHERE route=$location"; 
-  }
-  else if ($radioVal == "uncontacted"){
-    $sql2 = "UPDATE lead_table SET action='uncontacted' WHERE detail_id=$pid";
-    //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND uncontacted = uncontacted + 1 WHERE route=$location";
-  }
+  // //$pid = 5;
+  $sql2 = "UPDATE lead_table SET action='$id' WHERE detail_id=5";
+
+  // if($radioVal == "converted"){
+  //   $sql2 = "UPDATE lead_table SET action='converted' WHERE detail_id=$pid";
+  //   //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND converted = converted + 1 WHERE route=$location";
+  // }
+  // else if ($radioVal == "interested"){
+  //   $sql2 = "UPDATE lead_table SET action='interested' WHERE detail_id=$pid";
+  //   //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND (interested = interested + 1) WHERE route=$location"; 
+  // }
+  // else if ($radioVal == "uncontacted"){
+  //   $sql2 = "UPDATE lead_table SET action='uncontacted' WHERE detail_id=$pid";
+  //   //$sql3 = "UPDATE lead_stat SET inprocess = inprocess - 1 AND uncontacted = uncontacted + 1 WHERE route=$location";
+  // }
+  // else{
+  //   $sql2 = "UPDATE lead_table SET action='inprocess' WHERE detail_id=$pid"; 
+  // }
 }
 
 if (mysqli_query($conn, $sql2)) {
     echo "search in lead table done";
+    echo "form placed successfully";
 } else {
     echo "Error: " . $sql2 . "<br>" . mysqli_error($conn);
 }

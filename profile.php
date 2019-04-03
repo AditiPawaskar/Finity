@@ -1,34 +1,34 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "truck";
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "truck";
 
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
 
-$sql = "SELECT full_name, password, email, mob_number, user_name FROM user WHERE user_id = 1";
-$result = mysqli_query($conn, $sql);
+    $sql = "SELECT full_name, password, email, mob_number, user_name FROM user WHERE user_id = 1";
+    $result = mysqli_query($conn, $sql);
 
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
+    if (mysqli_num_rows($result) > 0) {
+        // output data of each row
 
-    $row = mysqli_fetch_assoc($result);
-    $full_name = $row["full_name"];
-    $password = $row["password"];
-    $email = $row["email"];
-    $mob_number = $row["mob_number"];
+        $row = mysqli_fetch_assoc($result);
+        $full_name = $row["full_name"];
+        $password = $row["password"];
+        $email = $row["email"];
+        $mob_number = $row["mob_number"];
 
-} else {
-    echo "0 results";
-}
+    } else {
+        echo "0 results";
+    }
 
-mysqli_close($conn);
-?>
+    mysqli_close($conn);
+    ?>
 
 
 <!doctype html>
@@ -86,7 +86,8 @@ mysqli_close($conn);
                     </button>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <div class="d-flex flex-row col-12">
+                    <div class
+                    ="d-flex flex-row col-12">
                         <div class="col-md-6 d-none d-md-block">
                             <div class="d-flex flex-row justify-content-xl-start justify-content-md-center">
                                 <i class="material-icons mt-2 text-muted" id="fullScreen"

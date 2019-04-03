@@ -1,8 +1,14 @@
 <?php
-// Always start this first
+// Initialize the session
 session_start();
-
-// Destroying the session clears the $_SESSION variable, thus "logging" the user
-// out. This also happens automatically when the browser is closed
+ 
+// Unset all of the session variables
+$_SESSION = array();
+ 
+// Destroy the session.
 session_destroy();
+ 
+// Redirect to login page
+header("location: login.php");
+exit;
 ?>
